@@ -1,5 +1,8 @@
 package main
 
+// https://docs.gofiber.io/
+// go get github.com/gofiber/fiber/v2
+
 import (
 	"github.com/gofiber/fiber/v2"
 )
