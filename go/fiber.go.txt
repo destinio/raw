@@ -1,17 +1,31 @@
-package main
-
 // https://docs.gofiber.io/
 // go get github.com/gofiber/fiber/v2
 
+package main
+
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html/v2"
 )
 
-func main() {
-	app := fiber.New()
+func indexHandler(c *fiber.Ctx) error {
+	return c.Render("index", fiber.Map{
+		"Title": "Hello, World!",
+	})
+}
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World 👋!")
+func main() {
+	engine := html.New("./views", ".html")
+	app := fiber.New(fiber.Config{
+		Views: engine,
+	})
+
+	app.Static("/", "./public")
+
+	app.Get("/", indexHandler)
+
+	app.Get("/cat/:id", func(c *fiber.Ctx) error {
+		return c.SendString("Cat " + c.Params("id"))
 	})
 
 	app.Listen(":3001")
